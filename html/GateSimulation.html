@@ -1,0 +1,775 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>GateSimulation</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2023-07-02">
+<meta name="DC.source" content="GateSimulation.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Simulation of Single and Multi-Qubit Gates</a>
+</li>
+<li>
+<a href="#2">Single Qubit Gate Action</a>
+</li>
+<li>
+<a href="#3">1. Pauli-X</a>
+</li>
+<li>
+<a href="#4">2. Pauli-Y</a>
+</li>
+<li>
+<a href="#5">3. Pauli-Z</a>
+</li>
+<li>
+<a href="#6">4. Hadamard Gate</a>
+</li>
+<li>
+<a href="#7">5. S Gate</a>
+</li>
+<li>
+<a href="#8">6. T Gate</a>
+</li>
+<li>
+<a href="#9">Verification of basic gate identites</a>
+</li>
+<li>
+<a href="#10">Action of 2-Qubit Gates</a>
+</li>
+<li>
+<a href="#11">CNOT-Gate</a>
+</li>
+<li>
+<a href="#12">CZ Gate</a>
+</li>
+<li>
+<a href="#13">SWAP GATE</a>
+</li>
+<li>
+<a href="#14">3 Qubit Gate: Toffoli Gate</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Simulation of Single and Multi-Qubit Gates</h2>
+<pre class="codeinput">
+<span class="comment">%In this section, I attempt to simulate the action of gates. I shall be</span>
+<span class="comment">%using matrix representation of the gates.</span>
+
+ket0 = [1;0];
+ket1 = [0;1];
+
+syms <span class="string">a</span>
+syms <span class="string">b</span>
+psi = a*ket0 + b*ket1
+<span class="comment">%I have defined a and b as symbolic variables, making advantage of the</span>
+<span class="comment">%Symbolic Math Toolbox of MATLAB. The reason for the same is to esure that</span>
+<span class="comment">%we can truely understand gate action on arbitary state.</span>
+
+format <span class="string">shortG</span>
+</pre>
+<pre class="codeoutput">psi =
+a
+b
+</pre>
+<h2 id="2">Single Qubit Gate Action</h2>
+<pre class="codeinput">
+<span class="comment">%First, we shall be simulating gate action on single qubits.</span>
+</pre>
+<h2 id="3">1. Pauli-X</h2>
+<pre class="codeinput">X = [0 1;
+    1 0];
+
+disp(<span class="string">'Action of X gate on state |0&gt;:'</span>)
+disp(X*ket0)
+
+disp(<span class="string">'Action of X gate on state |1&gt;:'</span>)
+disp(X*ket1)
+
+disp(<span class="string">'Action of X gate on state a|0&gt; + b|1&gt;:'</span>)
+disp(X*psi)
+</pre>
+<pre class="codeoutput">Action of X gate on state |0&gt;:
+     0
+     1
+Action of X gate on state |1&gt;:
+     1
+     0
+Action of X gate on state a|0&gt; + b|1&gt;:
+b
+a
+</pre>
+<h2 id="4">2. Pauli-Y</h2>
+<pre class="codeinput">Y = [0 -1i;
+    1i 0];
+
+disp(<span class="string">'Action of Y gate on state |0&gt;:'</span>)
+disp(Y*ket0)
+
+disp(<span class="string">'Action of Y gate on state |1&gt;:'</span>)
+disp(Y*ket1)
+
+disp(<span class="string">'Action of Y gate on state a|0&gt; + b|1&gt;:'</span>)
+disp(Y*psi)
+</pre>
+<pre class="codeoutput">Action of Y gate on state |0&gt;:
+            0 +          0i
+            0 +          1i
+Action of Y gate on state |1&gt;:
+            0 -          1i
+            0 +          0i
+Action of Y gate on state a|0&gt; + b|1&gt;:
+-b*1i
+ a*1i
+</pre>
+<h2 id="5">3. Pauli-Z</h2>
+<pre class="codeinput">Z = [1 0;
+    0 -1];
+
+disp(<span class="string">'Action of Z gate on state |0&gt;:'</span>)
+disp(Z*ket0)
+
+disp(<span class="string">'Action of Z gate on state |1&gt;:'</span>)
+disp(Z*ket1)
+
+disp(<span class="string">'Action of Z gate on state a|0&gt; + b|1&gt;:'</span>)
+disp(Z*psi)
+</pre>
+<pre class="codeoutput">Action of Z gate on state |0&gt;:
+     1
+     0
+Action of Z gate on state |1&gt;:
+     0
+    -1
+Action of Z gate on state a|0&gt; + b|1&gt;:
+ a
+-b
+</pre>
+<h2 id="6">4. Hadamard Gate</h2>
+<pre class="codeinput">H = (1/sqrt(2))*[1 1;
+                1 -1];
+
+disp(<span class="string">'Action of H gate on state |0&gt;:'</span>)
+disp(H*ket0)
+
+disp(<span class="string">'Action of H gate on state |1&gt;:'</span>)
+disp(H*ket1)
+
+disp(<span class="string">'Action of H gate on state a|0&gt; + b|1&gt;:'</span>)
+disp(H*psi)
+</pre>
+<pre class="codeoutput">Action of H gate on state |0&gt;:
+      0.70711
+      0.70711
+Action of H gate on state |1&gt;:
+      0.70711
+     -0.70711
+Action of H gate on state a|0&gt; + b|1&gt;:
+(2^(1/2)*a)/2 + (2^(1/2)*b)/2
+(2^(1/2)*a)/2 - (2^(1/2)*b)/2
+</pre>
+<h2 id="7">5. S Gate</h2>
+<pre class="codeinput">S = [1 0;
+    0 j];
+
+disp(<span class="string">'Action of S gate on state |0&gt;:'</span>)
+disp(S*ket0)
+
+disp(<span class="string">'Action of S gate on state |1&gt;:'</span>)
+disp(S*ket1)
+
+disp(<span class="string">'Action of S gate on state a|0&gt; + b|1&gt;:'</span>)
+disp(S*psi)
+</pre>
+<pre class="codeoutput">Action of S gate on state |0&gt;:
+     1
+     0
+Action of S gate on state |1&gt;:
+            0 +          0i
+            0 +          1i
+Action of S gate on state a|0&gt; + b|1&gt;:
+   a
+b*1i
+</pre>
+<h2 id="8">6. T Gate</h2>
+<pre class="codeinput">T = [1 0;
+    0 exp(i*pi/4)];
+
+disp(<span class="string">'Action of T gate on state |0&gt;:'</span>)
+disp(T*ket0)
+
+disp(<span class="string">'Action of T gate on state |1&gt;:'</span>)
+disp(T*ket1)
+
+disp(<span class="string">'Action of T gate on state a|0&gt; + b|1&gt;:'</span>)
+disp(T*psi)
+</pre>
+<pre class="codeoutput">Action of T gate on state |0&gt;:
+     1
+     0
+Action of T gate on state |1&gt;:
+            0 +          0i
+      0.70711 +    0.70711i
+Action of T gate on state a|0&gt; + b|1&gt;:
+                     a
+2^(1/2)*b*(1/2 + 1i/2)
+</pre>
+<h2 id="9">Verification of basic gate identites</h2>
+<pre class="codeinput">HZH = H*Z*H
+HXH = H*X*H
+disp(<span class="string">'(X+Z)/&radic;2='</span>)
+disp((X+Z)/sqrt(2))
+XZ = X*Z
+ZX = Z*X
+iY = i*Y
+</pre>
+<pre class="codeoutput">HZH =
+            0            1
+            1            0
+HXH =
+            1            0
+            0           -1
+(X+Z)/&radic;2=
+      0.70711      0.70711
+      0.70711     -0.70711
+XZ =
+     0    -1
+     1     0
+ZX =
+     0     1
+    -1     0
+iY =
+     0     1
+    -1     0
+</pre>
+<h2 id="10">Action of 2-Qubit Gates</h2>
+<pre class="codeinput">
+<span class="comment">%For 2-qubit gates, we have four basis states which stem from tensor</span>
+<span class="comment">% product of the basis states of a single qubit</span>
+
+syms <span class="string">c</span>
+syms <span class="string">d</span>
+
+k00 = kron(ket0,ket0);
+k01 = kron(ket0,ket1);
+k10 = kron(ket1,ket0);
+k11 = kron(ket1,ket1);
+
+psi_ = a*k00+b*k01+c*k10+d*k11
+</pre>
+<pre class="codeoutput">psi_ =
+a
+b
+c
+d
+</pre>
+<h2 id="11">CNOT-Gate</h2>
+<pre class="codeinput">CNOT = [1 0 0 0;
+        0 1 0 0;
+        0 0 0 1
+        0 0 1 0];
+
+disp(<span class="string">'Action of CNOT gate on state |00&gt;:'</span>)
+disp(CNOT*k00)
+
+disp(<span class="string">'Action of CNOT gate on state |01&gt;:'</span>)
+disp(CNOT*k01)
+
+disp(<span class="string">'Action of CNOT gate on state |10&gt;:'</span>)
+disp(CNOT*k10)
+
+disp(<span class="string">'Action of CNOT gate on state |11&gt;:'</span>)
+disp(CNOT*k11)
+
+disp(<span class="string">'Action of CNOT gate on state a|00&gt; + b|01&gt; + c|10&gt; + d|11&gt;:'</span>)
+disp(CNOT*psi_)
+</pre>
+<pre class="codeoutput">Action of CNOT gate on state |00&gt;:
+     1
+     0
+     0
+     0
+Action of CNOT gate on state |01&gt;:
+     0
+     1
+     0
+     0
+Action of CNOT gate on state |10&gt;:
+     0
+     0
+     0
+     1
+Action of CNOT gate on state |11&gt;:
+     0
+     0
+     1
+     0
+Action of CNOT gate on state a|00&gt; + b|01&gt; + c|10&gt; + d|11&gt;:
+a
+b
+d
+c
+</pre>
+<h2 id="12">CZ Gate</h2>
+<pre class="codeinput">CZ = [1 0 0 0;
+      0 1 0 0;
+      0 0 1 0
+      0 0 0 -1];
+
+disp(<span class="string">'Action of CZ gate on state |00&gt;:'</span>)
+disp(CZ*k00)
+
+disp(<span class="string">'Action of CZ gate on state |01&gt;:'</span>)
+disp(CZ*k01)
+
+disp(<span class="string">'Action of CZ gate on state |10&gt;:'</span>)
+disp(CZ*k10)
+
+disp(<span class="string">'Action of CZ gate on state |11&gt;:'</span>)
+disp(CZ*k11)
+
+disp(<span class="string">'Action of CZ gate on state a|00&gt; + b|01&gt; + c|10&gt; + d|11&gt;:'</span>)
+disp(CZ*psi_)
+</pre>
+<pre class="codeoutput">Action of CZ gate on state |00&gt;:
+     1
+     0
+     0
+     0
+Action of CZ gate on state |01&gt;:
+     0
+     1
+     0
+     0
+Action of CZ gate on state |10&gt;:
+     0
+     0
+     1
+     0
+Action of CZ gate on state |11&gt;:
+     0
+     0
+     0
+    -1
+Action of CZ gate on state a|00&gt; + b|01&gt; + c|10&gt; + d|11&gt;:
+ a
+ b
+ c
+-d
+</pre>
+<h2 id="13">SWAP GATE</h2>
+<pre class="codeinput">SWAP = [1 0 0 0;
+        0 0 1 0;
+        0 1 0 0
+        0 0 0 1];
+
+disp(<span class="string">'Action of SWAP gate on state |00&gt;:'</span>)
+disp(SWAP*k00)
+
+disp(<span class="string">'Action of SWAP gate on state |01&gt;:'</span>)
+disp(SWAP*k01)
+
+disp(<span class="string">'Action of SWAP gate on state |10&gt;:'</span>)
+disp(SWAP*k10)
+
+disp(<span class="string">'Action of SWAP gate on state |11&gt;:'</span>)
+disp(SWAP*k11)
+
+disp(<span class="string">'Action of SWAP gate on state a|00&gt; + b|01&gt; + c|10&gt; + d|11&gt;:'</span>)
+disp(SWAP*psi_)
+</pre>
+<pre class="codeoutput">Action of SWAP gate on state |00&gt;:
+     1
+     0
+     0
+     0
+Action of SWAP gate on state |01&gt;:
+     0
+     0
+     1
+     0
+Action of SWAP gate on state |10&gt;:
+     0
+     1
+     0
+     0
+Action of SWAP gate on state |11&gt;:
+     0
+     0
+     0
+     1
+Action of SWAP gate on state a|00&gt; + b|01&gt; + c|10&gt; + d|11&gt;:
+a
+c
+b
+d
+</pre>
+<h2 id="14">3 Qubit Gate: Toffoli Gate</h2>
+<pre class="codeinput">syms <span class="string">e</span>
+syms <span class="string">f</span>
+syms <span class="string">g</span>
+syms <span class="string">h</span>
+<span class="comment">%first, we shall construct our 3-qubit basis states</span>
+k000 = kron(ket0,k00);
+k001 = kron(ket0,k01);
+k010 = kron(ket0,k10);
+k011 = kron(ket0,k11);
+k100 = kron(ket1,k00);
+k101 = kron(ket1,k01);
+k110 = kron(ket1,k10);
+k111 = kron(ket1,k11);
+
+psi__ = a*k000 + b*k001 + c*k010 + d*k011 + e*k100 + f*k101 + g*k110 + h*k111
+
+TOFFOLI = [1 0 0 0 0 0 0 0;
+           0 1 0 0 0 0 0 0
+           0 0 1 0 0 0 0 0
+           0 0 0 1 0 0 0 0
+           0 0 0 0 1 0 0 0
+           0 0 0 0 0 1 0 0
+           0 0 0 0 0 0 0 1
+           0 0 0 0 0 0 1 0];
+
+<span class="comment">% We shall not be testing out the Toffoli for individual cases, but we</span>
+<span class="comment">% shall instead be checking it for our general state only and make our</span>
+<span class="comment">% inferences from there. It shall be verified if g and h would swap in</span>
+<span class="comment">% the final statevector.</span>
+
+disp(<span class="string">'Action of TOFFOLI gate on general state a|000&gt; + b|001&gt; + c|010&gt; + d|011&gt;'</span>)
+disp(<span class="string">'+ e|100&gt; + f|101&gt; + g|110&gt; + h|111&gt;'</span>)
+disp(TOFFOLI*psi__)
+</pre>
+<pre class="codeoutput">psi__ =
+a
+b
+c
+d
+e
+f
+g
+h
+Action of TOFFOLI gate on general state a|000&gt; + b|001&gt; + c|010&gt; + d|011&gt;
++ e|100&gt; + f|101&gt; + g|110&gt; + h|111&gt;
+a
+b
+c
+d
+e
+f
+h
+g
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Simulation of Single and Multi-Qubit Gates
+
+%In this section, I attempt to simulate the action of gates. I shall be
+%using matrix representation of the gates. 
+
+ket0 = [1;0];
+ket1 = [0;1];
+
+syms a
+syms b
+psi = a*ket0 + b*ket1
+%I have defined a and b as symbolic variables, making advantage of the
+%Symbolic Math Toolbox of MATLAB. The reason for the same is to esure that
+%we can truely understand gate action on arbitary state.
+
+format shortG
+
+%% Single Qubit Gate Action
+
+%First, we shall be simulating gate action on single qubits. 
+
+%% 1. Pauli-X
+X = [0 1;
+    1 0];
+
+disp('Action of X gate on state |0>:')
+disp(X*ket0)
+
+disp('Action of X gate on state |1>:')
+disp(X*ket1)
+
+disp('Action of X gate on state a|0> + b|1>:')
+disp(X*psi)
+
+%% 2. Pauli-Y
+Y = [0 -1i;
+    1i 0];
+
+disp('Action of Y gate on state |0>:')
+disp(Y*ket0)
+
+disp('Action of Y gate on state |1>:')
+disp(Y*ket1)
+
+disp('Action of Y gate on state a|0> + b|1>:')
+disp(Y*psi)
+
+%% 3. Pauli-Z
+Z = [1 0;
+    0 -1];
+
+disp('Action of Z gate on state |0>:')
+disp(Z*ket0)
+
+disp('Action of Z gate on state |1>:')
+disp(Z*ket1)
+
+disp('Action of Z gate on state a|0> + b|1>:')
+disp(Z*psi)
+
+%% 4. Hadamard Gate
+H = (1/sqrt(2))*[1 1;
+                1 -1];
+
+disp('Action of H gate on state |0>:')
+disp(H*ket0)
+
+disp('Action of H gate on state |1>:')
+disp(H*ket1)
+
+disp('Action of H gate on state a|0> + b|1>:')
+disp(H*psi)
+
+%% 5. S Gate
+S = [1 0;
+    0 j];
+
+disp('Action of S gate on state |0>:')
+disp(S*ket0)
+
+disp('Action of S gate on state |1>:')
+disp(S*ket1)
+
+disp('Action of S gate on state a|0> + b|1>:')
+disp(S*psi)
+
+
+%% 6. T Gate
+T = [1 0;
+    0 exp(i*pi/4)];
+
+disp('Action of T gate on state |0>:')
+disp(T*ket0)
+
+disp('Action of T gate on state |1>:')
+disp(T*ket1)
+
+disp('Action of T gate on state a|0> + b|1>:')
+disp(T*psi)
+
+%% Verification of basic gate identites
+
+HZH = H*Z*H
+HXH = H*X*H
+disp('(X+Z)/√2=')
+disp((X+Z)/sqrt(2))
+XZ = X*Z
+ZX = Z*X
+iY = i*Y
+
+%% Action of 2-Qubit Gates
+
+%For 2-qubit gates, we have four basis states which stem from tensor 
+% product of the basis states of a single qubit
+
+syms c
+syms d
+
+k00 = kron(ket0,ket0);
+k01 = kron(ket0,ket1);
+k10 = kron(ket1,ket0);
+k11 = kron(ket1,ket1);
+
+psi_ = a*k00+b*k01+c*k10+d*k11
+
+
+%% CNOT-Gate
+
+CNOT = [1 0 0 0;
+        0 1 0 0;
+        0 0 0 1
+        0 0 1 0];
+
+disp('Action of CNOT gate on state |00>:')
+disp(CNOT*k00)
+
+disp('Action of CNOT gate on state |01>:')
+disp(CNOT*k01)
+
+disp('Action of CNOT gate on state |10>:')
+disp(CNOT*k10)
+
+disp('Action of CNOT gate on state |11>:')
+disp(CNOT*k11)
+
+disp('Action of CNOT gate on state a|00> + b|01> + c|10> + d|11>:')
+disp(CNOT*psi_)
+
+
+%% CZ Gate
+CZ = [1 0 0 0;
+      0 1 0 0;
+      0 0 1 0
+      0 0 0 -1];
+
+disp('Action of CZ gate on state |00>:')
+disp(CZ*k00)
+
+disp('Action of CZ gate on state |01>:')
+disp(CZ*k01)
+
+disp('Action of CZ gate on state |10>:')
+disp(CZ*k10)
+
+disp('Action of CZ gate on state |11>:')
+disp(CZ*k11)
+
+disp('Action of CZ gate on state a|00> + b|01> + c|10> + d|11>:')
+disp(CZ*psi_)
+
+
+%% SWAP GATE
+SWAP = [1 0 0 0;
+        0 0 1 0;
+        0 1 0 0
+        0 0 0 1];
+
+disp('Action of SWAP gate on state |00>:')
+disp(SWAP*k00)
+
+disp('Action of SWAP gate on state |01>:')
+disp(SWAP*k01)
+
+disp('Action of SWAP gate on state |10>:')
+disp(SWAP*k10)
+
+disp('Action of SWAP gate on state |11>:')
+disp(SWAP*k11)
+
+disp('Action of SWAP gate on state a|00> + b|01> + c|10> + d|11>:')
+disp(SWAP*psi_)
+
+%% 3 Qubit Gate: Toffoli Gate
+
+syms e
+syms f
+syms g
+syms h
+%first, we shall construct our 3-qubit basis states
+k000 = kron(ket0,k00);
+k001 = kron(ket0,k01);
+k010 = kron(ket0,k10);
+k011 = kron(ket0,k11);
+k100 = kron(ket1,k00);
+k101 = kron(ket1,k01);
+k110 = kron(ket1,k10);
+k111 = kron(ket1,k11);
+
+psi__ = a*k000 + b*k001 + c*k010 + d*k011 + e*k100 + f*k101 + g*k110 + h*k111
+
+TOFFOLI = [1 0 0 0 0 0 0 0;
+           0 1 0 0 0 0 0 0
+           0 0 1 0 0 0 0 0
+           0 0 0 1 0 0 0 0
+           0 0 0 0 1 0 0 0
+           0 0 0 0 0 1 0 0
+           0 0 0 0 0 0 0 1
+           0 0 0 0 0 0 1 0];
+
+% We shall not be testing out the Toffoli for individual cases, but we
+% shall instead be checking it for our general state only and make our
+% inferences from there. It shall be verified if g and h would swap in
+% the final statevector.
+
+disp('Action of TOFFOLI gate on general state a|000> + b|001> + c|010> + d|011>')
+disp('+ e|100> + f|101> + g|110> + h|111>')
+disp(TOFFOLI*psi__)
+
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>

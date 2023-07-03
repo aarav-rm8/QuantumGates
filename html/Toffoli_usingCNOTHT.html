@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Toffoli_usingCNOTHT</title>
+<meta name="generator" content="MATLAB 23.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2023-07-03">
+<meta name="DC.source" content="Toffoli_usingCNOTHT.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1></h1>
+<!--introduction-->
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Generation of Toffoli GATE using CNOT, H, T and T&dagger; Gates</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Generation of Toffoli GATE using CNOT, H, T and T&dagger; Gates</h2>
+<pre class="codeinput">
+<span class="comment">%Here, we shall attempt to construct the CCX Gate using CNOT,H,T and T&dagger;</span>
+<span class="comment">%Gates. We can use that fact that T&dagger; = inverse of T</span>
+
+format <span class="string">short</span>
+
+ket0 = [1;0];
+ket1 = [0;1];
+k00 = kron(ket0,ket0);
+k01 = kron(ket0,ket1);
+k10 = kron(ket1,ket0);
+k11 = kron(ket1,ket1);
+k000 = kron(ket0,k00);
+k001 = kron(ket0,k01);
+k010 = kron(ket0,k10);
+k011 = kron(ket0,k11);
+k100 = kron(ket1,k00);
+k101 = kron(ket1,k01);
+k110 = kron(ket1,k10);
+k111 = kron(ket1,k11);
+
+CNOT = [1 0 0 0;
+        0 1 0 0;
+        0 0 0 1
+        0 0 1 0];
+I = [1 0; 0 1];
+H = (1/sqrt(2))*[1 1;
+                1 -1];
+
+<span class="comment">% Since it is a 3-Qubit System, we shall define CNOT as a 3-Qubit Gate with</span>
+<span class="comment">% different sets of Ctrl and Target Qubits used.</span>
+
+CNOT_12 = kron(CNOT,I);
+CNOT_23 = kron(I,CNOT);
+
+CNOT_13 = [1 0 0 0 0 0 0 0;
+           0 1 0 0 0 0 0 0
+           0 0 1 0 0 0 0 0
+           0 0 0 1 0 0 0 0
+           0 0 0 0 0 1 0 0
+           0 0 0 0 1 0 0 0
+           0 0 0 0 0 0 0 1
+           0 0 0 0 0 0 1 0]; <span class="comment">%This is derivable from the solutions.</span>
+
+T = [1 0;
+    0 exp(1i*pi/4)];
+Td = inv(T);
+
+<span class="comment">%Now we shall multiply the matrices in appropriate order. Will do it</span>
+<span class="comment">%stepwise and display the matrix after the final operation is done</span>
+
+TOFFOLI_Const = kron(kron(I,I),H); <span class="comment">%Step 1</span>
+TOFFOLI_Const = CNOT_23*TOFFOLI_Const; <span class="comment">%Step 2</span>
+TOFFOLI_Const = kron(kron(I,I),Td)*TOFFOLI_Const; <span class="comment">%Step 3</span>
+TOFFOLI_Const = CNOT_13*TOFFOLI_Const; <span class="comment">%Step 4</span>
+TOFFOLI_Const = kron(kron(I,I),T)*TOFFOLI_Const; <span class="comment">%Step 5</span>
+TOFFOLI_Const = CNOT_23*TOFFOLI_Const; <span class="comment">%Step 6</span>
+TOFFOLI_Const = kron(kron(I,I),Td)*TOFFOLI_Const; <span class="comment">%Step 7</span>
+TOFFOLI_Const = CNOT_13*TOFFOLI_Const; <span class="comment">%Step 8</span>
+TOFFOLI_Const = kron(kron(I,T),T)*TOFFOLI_Const; <span class="comment">%Step 9</span>
+TOFFOLI_Const = kron(CNOT,H)*TOFFOLI_Const; <span class="comment">%Step 10</span>
+TOFFOLI_Const = kron(kron(T,Td),I)*TOFFOLI_Const; <span class="comment">%Step 11</span>
+TOFFOLI_Const = CNOT_12*TOFFOLI_Const ;<span class="comment">%Step 12</span>
+
+disp(<span class="string">'The FINAL MAtrix is as follows:'</span>)
+disp(round(TOFFOLI_Const,10))
+</pre>
+<pre class="codeoutput">The FINAL MAtrix is as follows:
+     1     0     0     0     0     0     0     0
+     0     1     0     0     0     0     0     0
+     0     0     1     0     0     0     0     0
+     0     0     0     1     0     0     0     0
+     0     0     0     0     1     0     0     0
+     0     0     0     0     0     1     0     0
+     0     0     0     0     0     0     0     1
+     0     0     0     0     0     0     1     0
+</pre>
+<pre class="codeinput">
+<span class="comment">%Hence, it is verified that we obtain the original Toffoli Matrix.</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2023b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%%
+
+%% Generation of Toffoli GATE using CNOT, H, T and T† Gates
+%Here, we shall attempt to construct the CCX Gate using CNOT,H,T and T†
+%Gates. We can use that fact that T† = inverse of T
+
+format short
+
+ket0 = [1;0];
+ket1 = [0;1];
+k00 = kron(ket0,ket0);
+k01 = kron(ket0,ket1);
+k10 = kron(ket1,ket0);
+k11 = kron(ket1,ket1);
+k000 = kron(ket0,k00);
+k001 = kron(ket0,k01);
+k010 = kron(ket0,k10);
+k011 = kron(ket0,k11);
+k100 = kron(ket1,k00);
+k101 = kron(ket1,k01);
+k110 = kron(ket1,k10);
+k111 = kron(ket1,k11);
+
+CNOT = [1 0 0 0;
+        0 1 0 0;
+        0 0 0 1
+        0 0 1 0];
+I = [1 0; 0 1];
+H = (1/sqrt(2))*[1 1;
+                1 -1];
+
+% Since it is a 3-Qubit System, we shall define CNOT as a 3-Qubit Gate with
+% different sets of Ctrl and Target Qubits used. 
+
+CNOT_12 = kron(CNOT,I);
+CNOT_23 = kron(I,CNOT);
+
+CNOT_13 = [1 0 0 0 0 0 0 0;
+           0 1 0 0 0 0 0 0
+           0 0 1 0 0 0 0 0
+           0 0 0 1 0 0 0 0
+           0 0 0 0 0 1 0 0
+           0 0 0 0 1 0 0 0
+           0 0 0 0 0 0 0 1
+           0 0 0 0 0 0 1 0]; %This is derivable from the solutions.
+
+T = [1 0;
+    0 exp(1i*pi/4)];
+Td = inv(T);
+
+%Now we shall multiply the matrices in appropriate order. Will do it
+%stepwise and display the matrix after the final operation is done
+
+TOFFOLI_Const = kron(kron(I,I),H); %Step 1
+TOFFOLI_Const = CNOT_23*TOFFOLI_Const; %Step 2
+TOFFOLI_Const = kron(kron(I,I),Td)*TOFFOLI_Const; %Step 3
+TOFFOLI_Const = CNOT_13*TOFFOLI_Const; %Step 4
+TOFFOLI_Const = kron(kron(I,I),T)*TOFFOLI_Const; %Step 5
+TOFFOLI_Const = CNOT_23*TOFFOLI_Const; %Step 6
+TOFFOLI_Const = kron(kron(I,I),Td)*TOFFOLI_Const; %Step 7
+TOFFOLI_Const = CNOT_13*TOFFOLI_Const; %Step 8
+TOFFOLI_Const = kron(kron(I,T),T)*TOFFOLI_Const; %Step 9
+TOFFOLI_Const = kron(CNOT,H)*TOFFOLI_Const; %Step 10
+TOFFOLI_Const = kron(kron(T,Td),I)*TOFFOLI_Const; %Step 11
+TOFFOLI_Const = CNOT_12*TOFFOLI_Const ;%Step 12
+
+disp('The FINAL MAtrix is as follows:')
+disp(round(TOFFOLI_Const,10))
+%%
+%Hence, it is verified that we obtain the original Toffoli Matrix. 
+
+
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>
